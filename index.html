@@ -28,8 +28,8 @@
       color: #ccc;
     }
     .navbar h3 {
-      margin: 0 0 0 10px; /* 제목과 버튼 사이 간격 조정 */
-      padding-top: 5px; /* 제목을 아래로 살짝 내림 */
+      margin: 0 0 0 10px;
+      padding-top: 5px;
     }
     .sidebar {
       position: fixed;
@@ -42,7 +42,7 @@
       overflow-y: auto;
       box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
       transition: all 0.3s ease;
-      z-index: 1001; /* 사이드바가 오버레이 위로 오도록 설정 */
+      z-index: 1001;
     }
     .sidebar.open {
       left: 0;
@@ -70,7 +70,7 @@
       height: 100%;
       background: rgba(0, 0, 0, 0.5);
       display: none;
-      z-index: 1000; /* 오버레이가 사이드바 아래에 위치하도록 설정 */
+      z-index: 1000;
     }
     .overlay.active {
       display: block;
@@ -81,34 +81,29 @@
   </style>
 </head>
 <body>
-  <!-- 상단바 -->
   <div class="navbar">
     <button class="menu-button" onclick="toggleSidebar()">☰</button>
-    <h3 style="margin: 0 0 0 0px;">Jion Github site map</h3> 
+    <h3>Jion Github site map</h3> 
   </div>
 
-  <!-- 오버레이 -->
   <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
 
-  <!-- 사이드바 -->
   <div class="sidebar" id="sidebar">
-    <button onclick="openLink('/travel')">Travel Page ⧉</button>
-    <button onclick="openLink('/test')">Test Page ⧉</button>
-    <button onclick="openLink('')"></button>
-  </div>
+    </div>
 
-  <!-- 메인 콘텐츠 -->
   <div class="content">
     <h2>Jion Github</h2>
     <p>site map page</p>
+    <p id="loading-msg">메뉴를 불러오는 중...</p>
   </div>
 
   <script>
+    // ⚠️ 여기에 구글 시트에서 복사한 '웹에 게시(CSV)' URL을 넣으세요.
+    const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/13LALLhD9Q543qK_p2kXnmNIK4MMF-tgTWd4QtYWMCKs/edit?usp=sharing';
+
     function toggleSidebar() {
       const sidebar = document.getElementById("sidebar");
       const overlay = document.getElementById("overlay");
-
-      // 사이드바 열기/닫기
       if (sidebar.classList.contains("open")) {
         closeSidebar();
       } else {
@@ -120,19 +115,53 @@
     function closeSidebar() {
       const sidebar = document.getElementById("sidebar");
       const overlay = document.getElementById("overlay");
-
       sidebar.classList.remove("open");
       overlay.classList.remove("active");
     }
 
-    // 버튼 클릭 시 링크를 현재 페이지에서 열기
     function openLink(url) {
-      // 현재 페이지에서 링크 열기
       window.location.href = url;
-
-      // 사이드바 닫기
       closeSidebar();
     }
+
+    // 구글 시트 데이터를 가져와서 버튼을 만드는 핵심 함수
+    async function fetchSheetData() {
+      try {
+        const response = await fetch(SHEET_CSV_URL);
+        const data = await response.text();
+        
+        // CSV 데이터를 줄 단위로 나누기
+        const rows = data.split('\n');
+        const sidebar = document.getElementById("sidebar");
+        const loadingMsg = document.getElementById("loading-msg");
+
+        // 기존 사이드바 내용 비우기
+        sidebar.innerHTML = '';
+
+        // 첫 번째 줄(헤더)을 제외하고 한 줄씩 처리
+        for (let i = 1; i < rows.length; i++) {
+          const row = rows[i].split(',');
+          if (row.length >= 2) {
+            const name = row[0].trim();
+            const link = row[1].trim();
+
+            if (name && link) {
+              const btn = document.createElement('button');
+              btn.innerHTML = `${name} ⧉`;
+              btn.onclick = () => openLink(link);
+              sidebar.appendChild(btn);
+            }
+          }
+        }
+        loadingMsg.style.display = 'none';
+      } catch (error) {
+        console.error('데이터를 불러오지 못했습니다:', error);
+        document.getElementById("loading-msg").innerText = "메뉴를 불러오지 못했습니다.";
+      }
+    }
+
+    // 페이지가 로드될 때 데이터 가져오기 실행
+    window.onload = fetchSheetData;
   </script>
 </body>
 </html>
