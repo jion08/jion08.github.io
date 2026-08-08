@@ -3,120 +3,476 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jion Github Site map</title>
+  <title>Jion Studio</title>
+  <meta name="description" content="Jion Studio — personal project map and links.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
   <style>
-    body {
+    :root {
+      --ink: #0b1210;
+      --ink-soft: #14201c;
+      --mist: #d7e4dc;
+      --mist-dim: rgba(215, 228, 220, 0.72);
+      --accent: #c8f542;
+      --accent-ink: #10180c;
+      --line: rgba(215, 228, 220, 0.14);
+      --panel: #16241f;
+      --shadow: rgba(0, 0, 0, 0.35);
+      --nav-h: 64px;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      min-height: 100%;
+    }
+
+    body {
+      font-family: "Sora", sans-serif;
+      color: var(--mist);
+      background: var(--ink);
       overflow-x: hidden;
     }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(ellipse 80% 55% at 15% 10%, rgba(200, 245, 66, 0.16), transparent 55%),
+        radial-gradient(ellipse 70% 50% at 90% 80%, rgba(64, 140, 120, 0.22), transparent 50%),
+        linear-gradient(160deg, #0b1210 0%, #101a16 45%, #0a1411 100%);
+      animation: wash 14s ease-in-out infinite alternate;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      opacity: 0.35;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+      background-size: 180px 180px;
+      mix-blend-mode: soft-light;
+    }
+
+    @keyframes wash {
+      from { transform: scale(1) translate(0, 0); }
+      to { transform: scale(1.04) translate(-1%, 1%); }
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(28px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse-line {
+      0%, 100% { opacity: 0.35; }
+      50% { opacity: 0.9; }
+    }
+
     .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
       display: flex;
       align-items: center;
-      background-color: #333;
-      color: white;
-      padding: 10px 3px;
+      gap: 14px;
+      height: var(--nav-h);
+      padding: 0 18px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(11, 18, 16, 0.72);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
     }
+
     .menu-button {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--mist);
       cursor: pointer;
+      transition: border-color 0.25s var(--ease), background 0.25s var(--ease), color 0.25s var(--ease);
     }
-    .menu-button:hover {
-      color: #ccc;
+
+    .menu-button:hover,
+    .menu-button:focus-visible {
+      border-color: rgba(200, 245, 66, 0.55);
+      background: rgba(200, 245, 66, 0.08);
+      color: var(--accent);
+      outline: none;
     }
-    .navbar h3 {
-      margin: 0 0 0 10px;
-      padding-top: 5px;
+
+    .menu-button svg {
+      width: 20px;
+      height: 20px;
     }
+
+    .navbar-brand {
+      font-family: "Syne", sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .navbar-brand span {
+      color: var(--accent);
+    }
+
     .sidebar {
       position: fixed;
       top: 0;
-      left: -250px;
-      width: 250px;
+      left: 0;
+      width: min(320px, 86vw);
       height: 100%;
-      background-color: #444;
-      color: white;
+      padding: 88px 0 24px;
+      background: var(--panel);
+      border-right: 1px solid var(--line);
+      box-shadow: 18px 0 48px var(--shadow);
+      transform: translateX(-105%);
+      transition: transform 0.35s var(--ease);
       overflow-y: auto;
-      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
-      transition: all 0.3s ease;
       z-index: 1001;
     }
+
     .sidebar.open {
-      left: 0;
+      transform: translateX(0);
     }
+
+    .sidebar-label {
+      margin: 0 22px 14px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--mist-dim);
+    }
+
     .sidebar button {
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
       width: 100%;
-      padding: 15px 20px;
-      background-color: #444;
-      color: white;
-      border: none;
+      padding: 16px 22px;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      background: transparent;
+      color: var(--mist);
+      font-family: inherit;
+      font-size: 0.98rem;
+      font-weight: 500;
       text-align: left;
-      font-size: 16px;
-      border-bottom: 1px solid #555;
       cursor: pointer;
+      transition: background 0.2s var(--ease), color 0.2s var(--ease), padding-left 0.2s var(--ease);
     }
-    .sidebar button:hover {
-      background-color: #555;
+
+    .sidebar button:hover,
+    .sidebar button:focus-visible {
+      background: rgba(200, 245, 66, 0.08);
+      color: var(--accent);
+      padding-left: 28px;
+      outline: none;
     }
+
+    .sidebar button .arrow {
+      font-size: 0.85rem;
+      opacity: 0.55;
+    }
+
+    .sidebar-empty,
+    .sidebar-error {
+      margin: 8px 22px;
+      color: var(--mist-dim);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
     .overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      display: none;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s var(--ease);
       z-index: 1000;
     }
+
     .overlay.active {
-      display: block;
+      opacity: 1;
+      pointer-events: auto;
     }
-    .content {
-      padding: 20px;
+
+    .hero {
+      position: relative;
+      min-height: calc(100svh - var(--nav-h));
+      display: grid;
+      align-content: center;
+      padding: clamp(40px, 8vw, 88px) clamp(22px, 6vw, 80px) 72px;
+      overflow: hidden;
+    }
+
+    .hero-visual {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .hero-visual .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(8px);
+    }
+
+    .hero-visual .orb-a {
+      width: min(52vw, 420px);
+      height: min(52vw, 420px);
+      top: -8%;
+      right: -6%;
+      background: radial-gradient(circle, rgba(200, 245, 66, 0.28), transparent 68%);
+      animation: wash 11s ease-in-out infinite alternate-reverse;
+    }
+
+    .hero-visual .orb-b {
+      width: min(60vw, 520px);
+      height: min(60vw, 520px);
+      bottom: -18%;
+      left: -12%;
+      background: radial-gradient(circle, rgba(70, 150, 130, 0.28), transparent 70%);
+    }
+
+    .hero-visual .grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: radial-gradient(ellipse 70% 60% at 60% 40%, #000 20%, transparent 75%);
+      opacity: 0.55;
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+    }
+
+    .brand {
+      margin: 0 0 18px;
+      font-family: "Syne", sans-serif;
+      font-size: clamp(3.6rem, 14vw, 7.5rem);
+      font-weight: 800;
+      line-height: 0.9;
+      letter-spacing: -0.04em;
+      animation: rise 0.9s var(--ease) both;
+    }
+
+    .brand em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .headline {
+      margin: 0 0 14px;
+      max-width: 16ch;
+      font-family: "Syne", sans-serif;
+      font-size: clamp(1.45rem, 3.6vw, 2.2rem);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      animation: rise 0.9s var(--ease) 0.1s both;
+    }
+
+    .support {
+      margin: 0 0 32px;
+      max-width: 34ch;
+      color: var(--mist-dim);
+      font-size: clamp(1rem, 2.2vw, 1.15rem);
+      line-height: 1.65;
+      animation: rise 0.9s var(--ease) 0.18s both;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      animation: rise 0.9s var(--ease) 0.26s both;
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 0 20px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.25s var(--ease), background 0.25s var(--ease), border-color 0.25s var(--ease), color 0.25s var(--ease);
+    }
+
+    .cta:active {
+      transform: translateY(1px);
+    }
+
+    .cta-primary {
+      background: var(--accent);
+      color: var(--accent-ink);
+    }
+
+    .cta-primary:hover,
+    .cta-primary:focus-visible {
+      background: #d7ff6a;
+      outline: none;
+    }
+
+    .cta-ghost {
+      background: transparent;
+      border-color: var(--line);
+      color: var(--mist);
+    }
+
+    .cta-ghost:hover,
+    .cta-ghost:focus-visible {
+      border-color: rgba(200, 245, 66, 0.5);
+      color: var(--accent);
+      outline: none;
+    }
+
+    .status-line {
+      margin-top: 28px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--mist-dim);
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      animation: rise 0.9s var(--ease) 0.34s both;
+    }
+
+    .status-line .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 0 rgba(200, 245, 66, 0.45);
+      animation: pulse-line 2.4s ease-in-out infinite;
+    }
+
+    .status-line.error .dot {
+      background: #ff7b6b;
+      animation: none;
+    }
+
+    @media (max-width: 640px) {
+      .navbar {
+        padding: 0 14px;
+      }
+
+      .hero {
+        align-content: end;
+        padding-bottom: 56px;
+      }
+
+      .cta {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="navbar">
-    <button class="menu-button" onclick="toggleSidebar()">☰</button>
-    <h3>Jion Github site map</h3> 
-  </div>
+  <header class="navbar">
+    <button class="menu-button" onclick="toggleSidebar()" aria-label="메뉴 열기" aria-controls="sidebar" aria-expanded="false" id="menu-button">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <div class="navbar-brand">Jion <span>Studio</span></div>
+  </header>
 
   <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
 
-  <div class="sidebar" id="sidebar">
+  <aside class="sidebar" id="sidebar" aria-label="사이트 맵">
+    <p class="sidebar-label">Site map</p>
+    <p class="sidebar-empty" id="sidebar-state">링크를 불러오는 중…</p>
+  </aside>
+
+  <main class="hero">
+    <div class="hero-visual" aria-hidden="true">
+      <div class="orb orb-a"></div>
+      <div class="orb orb-b"></div>
+      <div class="grid"></div>
     </div>
 
-  <div class="content">
-    <h2>Jion Github</h2>
-    <p>site map page</p>
-    <p id="loading-msg"> </p>
-  </div>
+    <div class="hero-copy">
+      <h1 class="brand">JION<em>.</em></h1>
+      <p class="headline">프로젝트를 한곳에서 열어보는 스튜디오 홈</p>
+      <p class="support">깃허브와 연결된 페이지들을 사이드 맵으로 모아 두었습니다. 메뉴에서 바로 이동하세요.</p>
+      <div class="cta-row">
+        <button class="cta cta-primary" type="button" onclick="toggleSidebar()">사이트 맵 열기</button>
+        <a class="cta cta-ghost" href="https://github.com/jion08" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+      <p class="status-line" id="status-line">
+        <span class="dot" aria-hidden="true"></span>
+        <span id="loading-msg">시트에서 메뉴를 동기화하는 중</span>
+      </p>
+    </div>
+  </main>
 
   <script>
-    // ⚠️ 여기에 구글 시트에서 복사한 '웹에 게시(CSV)' URL을 넣으세요.
     const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRYpEpmKqJaby_jQoNASKyhlX5h-I0sKat_1ccxKknSp4pP-MqDiIHetpDyBIfc0JiWRt3zV_syYfr_/pub?gid=0&single=true&output=csv';
 
     function toggleSidebar() {
       const sidebar = document.getElementById("sidebar");
-      const overlay = document.getElementById("overlay");
       if (sidebar.classList.contains("open")) {
         closeSidebar();
       } else {
-        sidebar.classList.add("open");
-        overlay.classList.add("active");
+        openSidebar();
       }
+    }
+
+    function openSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
+      const menuButton = document.getElementById("menu-button");
+      sidebar.classList.add("open");
+      overlay.classList.add("active");
+      menuButton.setAttribute("aria-expanded", "true");
     }
 
     function closeSidebar() {
       const sidebar = document.getElementById("sidebar");
       const overlay = document.getElementById("overlay");
+      const menuButton = document.getElementById("menu-button");
       sidebar.classList.remove("open");
       overlay.classList.remove("active");
+      menuButton.setAttribute("aria-expanded", "false");
     }
 
     function openLink(url) {
@@ -124,43 +480,104 @@
       closeSidebar();
     }
 
-    // 구글 시트 데이터를 가져와서 버튼을 만드는 핵심 함수
+    function parseCsvRows(text) {
+      const rows = [];
+      let current = [];
+      let field = "";
+      let inQuotes = false;
+
+      for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        const next = text[i + 1];
+
+        if (char === '"') {
+          if (inQuotes && next === '"') {
+            field += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+          continue;
+        }
+
+        if (char === "," && !inQuotes) {
+          current.push(field);
+          field = "";
+          continue;
+        }
+
+        if ((char === "\n" || char === "\r") && !inQuotes) {
+          if (char === "\r" && next === "\n") i++;
+          current.push(field);
+          rows.push(current);
+          current = [];
+          field = "";
+          continue;
+        }
+
+        field += char;
+      }
+
+      if (field.length || current.length) {
+        current.push(field);
+        rows.push(current);
+      }
+
+      return rows;
+    }
+
     async function fetchSheetData() {
+      const sidebar = document.getElementById("sidebar");
+      const sidebarState = document.getElementById("sidebar-state");
+      const loadingMsg = document.getElementById("loading-msg");
+      const statusLine = document.getElementById("status-line");
+
       try {
         const response = await fetch(SHEET_CSV_URL);
+        if (!response.ok) throw new Error("sheet fetch failed");
         const data = await response.text();
-        
-        // CSV 데이터를 줄 단위로 나누기
-        const rows = data.split('\n');
-        const sidebar = document.getElementById("sidebar");
-        const loadingMsg = document.getElementById("loading-msg");
+        const rows = parseCsvRows(data);
 
-        // 기존 사이드바 내용 비우기
-        sidebar.innerHTML = '';
+        sidebar.querySelectorAll("button").forEach((btn) => btn.remove());
 
-        // 첫 번째 줄(헤더)을 제외하고 한 줄씩 처리
+        let count = 0;
         for (let i = 1; i < rows.length; i++) {
-          const row = rows[i].split(',');
-          if (row.length >= 2) {
-            const name = row[0].trim();
-            const link = row[1].trim();
+          const row = rows[i];
+          if (!row || row.length < 2) continue;
 
-            if (name && link) {
-              const btn = document.createElement('button');
-              btn.innerHTML = `${name} ⧉`;
-              btn.onclick = () => openLink(link);
-              sidebar.appendChild(btn);
-            }
-          }
+          const name = (row[0] || "").trim();
+          const link = (row[1] || "").trim();
+          if (!name || !link) continue;
+
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.innerHTML = `<span>${name}</span><span class="arrow" aria-hidden="true">↗</span>`;
+          btn.onclick = () => openLink(link);
+          sidebar.appendChild(btn);
+          count += 1;
         }
-        loadingMsg.style.display = 'none';
+
+        if (count === 0) {
+          sidebarState.className = "sidebar-empty";
+          sidebarState.textContent = "시트에 등록된 링크가 없습니다.";
+          loadingMsg.textContent = "등록된 메뉴가 아직 없습니다";
+        } else {
+          sidebarState.remove();
+          loadingMsg.textContent = `메뉴 ${count}개 준비됨`;
+        }
       } catch (error) {
-        console.error('데이터를 불러오지 못했습니다:', error);
-        document.getElementById("loading-msg").innerText = "메뉴를 불러오지 못했습니다.";
+        console.error("데이터를 불러오지 못했습니다:", error);
+        sidebarState.className = "sidebar-error";
+        sidebarState.textContent = "메뉴를 불러오지 못했습니다.";
+        statusLine.classList.add("error");
+        loadingMsg.textContent = "메뉴를 불러오지 못했습니다";
       }
     }
 
-    // 페이지가 로드될 때 데이터 가져오기 실행
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeSidebar();
+    });
+
     window.onload = fetchSheetData;
   </script>
 </body>
