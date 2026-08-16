@@ -549,6 +549,8 @@
           const name = (row[0] || "").trim();
           const link = (row[1] || "").trim();
           if (!name || !link) continue;
+          // 시트 범례 행(사이트 제작도 / 완성·미완성·오류)은 메뉴에서 제외
+          if (name.includes("사이트 제작도") || link === "/1") continue;
 
           const btn = document.createElement("button");
           btn.type = "button";
